@@ -29,17 +29,23 @@
 
     else{
         echo "Welcome<br>";
-        $stmt = $conn->prepare("SELECT first_name,middle_name,last_name from customer WHERE customer_id = ?");
+        $stmt = $conn->prepare("SELECT personal_id,first_name,middle_name,last_name,gender,date_of_birth,address from customer WHERE customer_id = ?");
         $stmt->bind_param("s",$customer_id);
         $stmt->execute();
         $stmt->store_result();
-        $stmt->bind_result($firstname,$middlename,$lastname);
+        $stmt->bind_result($personal_id,$firstname,$middlename,$lastname,$gender,$date_of_birth,$address);
         $stmt->fetch();
+        
         if($middlename == "-"){
             echo $firstname." ".$lastname."<br>";
         } else {
             echo $firstname." ".$middlename." ".$lastname."<br>";
         }
+
+        echo "Person ID: ".$personal_id."<br>";
+        echo "Gender: ".$gender."<br>";
+        echo "Date of Birth: ".$date_of_birth."<br>";
+        echo "address: ".$address."<br>";
     }
 
     $conn->close();
