@@ -4,6 +4,8 @@
 <body>
 
 <?php
+    session_start();
+
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -29,11 +31,11 @@
 
     else{
         echo "Welcome<br>";
-        $stmt = $conn->prepare("SELECT personal_id,first_name,middle_name,last_name,gender,date_of_birth,address from customer WHERE customer_id = ?");
+        $stmt = $conn->prepare("SELECT customer_id,personal_id,first_name,middle_name,last_name,gender,date_of_birth,address from customer WHERE customer_id = ?");
         $stmt->bind_param("s",$customer_id);
         $stmt->execute();
         $stmt->store_result();
-        $stmt->bind_result($personal_id,$firstname,$middlename,$lastname,$gender,$date_of_birth,$address);
+        $stmt->bind_result($customer_id,$personal_id,$firstname,$middlename,$lastname,$gender,$date_of_birth,$address);
         $stmt->fetch();
         
         if($middlename == "-"){
@@ -47,6 +49,15 @@
         echo "Date of Birth: ".$date_of_birth."<br>";
         echo "address: ".$address."<br>";
     }
+    $_SESSION['customer_id'] = $customer_id;
+    $_SESSION['personal_id'] = $personal_id;
+    $_SESSION['firstname'] = $firstname;
+    $_SESSION['lastname'] = $lastname;
+    $_SESSION['middlename'] = $middlename;
+    $_SESSION['gender'] = $gender;
+    $_SESSION['date_of_birth'] = $date_of_birth;
+    $_SESSION['address'] = $address;
+
 
     $conn->close();
 
@@ -56,6 +67,8 @@
 
 
 ?>
+<a href="flight_book.php">Goto booking</a>
+
 
 
 </body>
